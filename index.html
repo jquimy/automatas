@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Máquina de Turing - Resta Binaria</title>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Máquina de Turing - Resta Binaria</h1>
+            <p class="subtitle">Simulador de una Máquina de Turing que resta dos números binarios</p>
+        </header>
+        
+        <div class="main-content">
+            <div class="panel">
+                <h2>Configuración de Entrada</h2>
+                <div class="input-section">
+                    <div class="input-group">
+                        <label for="firstNumber">Primer número (binario):</label>
+                        <input type="text" id="firstNumber" placeholder="Ej: 101" value="101">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="secondNumber">Segundo número (binario):</label>
+                        <input type="text" id="secondNumber" placeholder="Ej: 011" value="011">
+                    </div>
+                    
+                    <div class="controls">
+                        <button id="startBtn">Iniciar Máquina</button>
+                        <button id="stepBtn" disabled>Paso a Paso</button>
+                        <button id="resetBtn" disabled>Reiniciar</button>
+                    </div>
+                </div>
+
+                
+                
+                <div class="panel">
+                    <h2>Recursos</h2>
+                    <div class="input-section">
+                        <div class="input-group">
+                            <label>Documento PDF del ejercicio (hecho a mano):</label>
+                            <button id="viewPdfBtn">Ver documento PDF</button>
+                        </div>
+                        <div class="input-group">
+                            <label>Video:</label>
+                            <button id="viewVideoBtn">Ver Video</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tape-container">
+                    <h3>Cinta de la Máquina de Turing</h3>
+                    <div class="operation-info" id="operationInfo"></div> <!-- NUEVO -->
+                    <div class="tape" id="tape"></div>
+                    <div class="state-info" id="stateInfo">Estado: q0</div>
+                </div>
+                
+                <div class="panel">
+                    <h2>1. Séptupla de la Máquina de Turing</h2>
+                    <ul class="septuple">
+                        <li><strong>Q (Estados):</strong> { q0, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13, q14 }</li>
+                        <li><strong>Σ (Alfabeto de entrada):</strong> { 0, 1 }</li>
+                        <li><strong>Γ (Alfabeto de cinta):</strong> { 0, 1, X, Y, B }</li>
+                        <li><strong>δ (Función de transición):</strong> Ver tabla en "Función de Transición"</li>
+                        <li><strong>q0 (Estado inicial):</strong> q0</li>
+                        <li><strong>B (Símbolo blanco):</strong> B</li>
+                        <li><strong>F (Estado de aceptación):</strong> { q13 }</li>
+                    </ul>
+                </div>
+                
+                <div class="panel">
+                    <h2>Función de Transición (δ)</h2>
+                    <h3>Tabla de Transiciones</h3>
+                    <div class="table-container">
+                        <table class="transition-table">
+                            <thead>
+                                <tr>
+                                    <th>Estado Actual</th>
+                                    <th>Símbolo Leído</th>
+                                    <th>Nuevo Estado</th>
+                                    <th>Símbolo Escrito</th>
+                                    <th>Movimiento</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transitionTableBody">
+                                <!-- La tabla se llenará con JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="panel">
+                    <h2>IDs de Operaciones</h2>
+                    <div class="history" id="history"></div>
+                </div>
+                
+            </div>
+            <div class="panel">
+                <h2>Gráfico de la Máquina de Turing</h2>
+                <div class="graph-container">
+                    <div class="graph" id="graph">
+                        <div id="graphContainer" style="
+  width: 1000px;
+  height: 800px;
+  overflow: auto;
+  background-color: transparent;
+  border-radius: 12px;
+  border: 2px solid #ccc;
+  margin: auto;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+">
+  <canvas id="graphCanvas" width="3000" height="2000" style="background-color: transparent;"></canvas>
+</div>
+
+                
+                <!-- DESCRIPCIÓN FORMAL DEL AUTÓMATA -->
+                <div class="automata-description">
+                    <h3>Descripción Formal de la Máquina de Turing</h3>
+                    
+                    <div class="description-section">
+                        <h4> Conjunto de Estados (Q)</h4>
+                        <div class="states-grid">
+                            <div class="state-group">
+                                <strong>Estados Principales:</strong>
+                                <span>q₀, q₁, q₂, q₃, q₄</span>
+                            </div>
+                            <div class="state-group">
+                                <strong>Estados de Procesamiento:</strong>
+                                <span>q₅, q₆, q₇, q₈</span>
+                            </div>
+                            <div class="state-group">
+                                <strong>Estados de Restauración:</strong>
+                                <span>q₉, q₁₀, q₁₁, q₁₂</span>
+                            </div>
+                            <div class="state-group">
+                                <strong>Estados Finales:</strong>
+                                <span class="state-accept">q₁₃</span>, 
+                                <span class="state-reject">q₁₄</span>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="description-section">
+                        <h4> Alfabeto de la Cinta (Γ)</h4>
+                        <div class="alphabet-grid">
+                            <div class="symbol-group">
+                                <strong>Símbolos de Entrada:</strong>
+                                <code>0, 1</code>
+                            </div>
+                            <div class="symbol-group">
+                                <strong>Símbolos Auxiliares:</strong>
+                                <code>X, Y</code>
+                            </div>
+                            <div class="symbol-group">
+                                <strong>Símbolo Blanco:</strong>
+                                <code>B</code>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="description-section">
+                        <h4> Estados Especiales</h4>
+                        <div class="special-states">
+                            <div class="special-state">
+                                <span class="state-accept">q₁₃</span>
+                                <span>- Estado de aceptación (resta completada)</span>
+                            </div>
+                            <div class="special-state">
+                                <span class="state-reject">q₁₄</span>
+                                <span>- Estado de rechazo (entrada inválida)</span>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="description-section">
+                        <h4> Especificaciones Técnicas</h4>
+                        <div class="specs-grid">
+                            <div class="spec-item">
+                                <strong>Estado Inicial:</strong>
+                                <code>q₀</code>
+                            </div>
+                            <div class="spec-item">
+                                <strong>Estado de Aceptación:</strong>
+                                <code>q₁₃</code>
+                            </div>
+                            <div class="spec-item">
+                                <strong>Estado de Rechazo:</strong>
+                                <code>q₁₄</code>
+                            </div>
+                            <div class="spec-item">
+                                <strong>Símbolo Blanco:</strong>
+                                <code>B</code>
+                            </div>
+                            <div class="spec-item">
+                                <strong>Total de Estados:</strong>
+                                <code>15</code>
+                            </div>
+                            <div class="spec-item">
+                                <strong>Total de Transiciones:</strong>
+                                <code id="transitionCount">0</code>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="description-section">
+                        <h4> ID (Descripción Instantánea) y Función Extendida δ*</h4>
+                        <div class="description-section">
+                            <h4> Datos en tiempo real</h4>
+                            <div class="specs-grid">
+                                <div class="spec-item">
+                                    <strong>δ* actual:</strong>
+                                    <code id="deltaStarDisplay">—</code>
+                                </div>
+                                <div class="spec-item">
+                                    <strong>Paso actual:</strong>
+                                    <code id="idStepCount">0</code>
+                                </div>
+                            </div>
+                            <h4> Secuencia de IDs (u q v)</h4>
+                            <ul id="idSteps" class="septuple"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
